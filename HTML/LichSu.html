@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Web Thi Online Trắc Nghiệm</title>
+  <script src="../js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/custom.css">
+  <script src="../DB/Subjects.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+</head>
+<body>
+    <div class="container">
+     <header class="row">
+         <img src="https://caodang.fpt.edu.vn/wp-content/uploads/Banner1-1.png">
+     </header>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+     <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <li class="nav-item">
+          <a class="nav-link ti" href="../TrangChu.html"><strong class="title" >FPT Polytechnic</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="../HTML/GioiThieu.html"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/2986/premium/2986103.png?token=exp=1642589750~hmac=19b531498a360d1aba69af3128252735"> Giới Thiệu</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="#"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/3543/premium/3543544.png?token=exp=1642589888~hmac=aa5fc55969e5af1f334838428f260c5d"> Liên Hệ</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="feedback.html"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/2839/premium/2839172.png?token=exp=1642589960~hmac=226141e2850a502da0043d2b2075393f"> Góp Ý</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="Hoidap.html"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/2859/premium/2859734.png?token=exp=1642605886~hmac=0354ed97529f974657803737b812ef3b"> Hỏi Đáp</strong></a>
+        </li>
+        <li class="nav-item  click dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           <strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/1144/premium/1144709.png?token=exp=1642591042~hmac=64cd2753a7b4b878c68f9d8b2ac13063"> Tài Khoản</strong>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li class="item"><a class="dropdown-item" href="DN.html"><strong class="title">Đăng Nhập</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="#"><strong class="title">Quên Mật Khẩu</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="DK.html"><strong class="title">Đăng Ký Thành Viên</strong></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="item"><a class="dropdown-item" href="#"><strong class="title">Đăng Xuất</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="Changepass.html"><strong class="title">Đổi Mật Khẩu</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="info.html"><strong class="title">Cập Nhật Tài Khoản</strong></a></li> 
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script type="text/javascript">
+      var db = openDatabase('asm', '1.0', 'webonline', 2 * 1024 * 1024);
+      db.transaction(function (tx) {
+      tx.executeSql('SELECT * FROM LichSu WHERE TenUser=?',[localStorage.getItem("userdn")],function (tx,result) {
+        lent = result.rows.length;
+        var trangthai;         
+        var table = document.getElementById('table').getElementsByTagName('tbody')[0];    
+        for(var i = 0;i < lent; i++){ 
+        if(result.rows.item(i).Mark>=5){trangthai="Đạt"}else{trangthai="Chưa Đạt"}   
+        var newRow= table.insertRow();
+        var newCell1= newRow.insertCell(0);
+        var newCell2= newRow.insertCell(1);
+        var newCell3= newRow.insertCell(2);
+        var newCell4= newRow.insertCell(3);
+        var newCell5= newRow.insertCell(4);
+        var text1 = document.createTextNode(i+1);     
+        var text2 = document.createTextNode(result.rows.item(i).TenQuiz);
+        var text3 = document.createTextNode(result.rows.item(i).Mark+"/10");
+        var text4 = document.createTextNode(trangthai);
+        var text5 = document.createTextNode(result.rows.item(i).NgayThi);
+        newCell1.appendChild(text1);
+        newCell2.appendChild(text2);
+        newCell3.appendChild(text3);
+        newCell4.appendChild(text4);
+        newCell5.appendChild(text5);
+        }
+      })
+    })
+    </script>
+     <div class="row tbody"> 
+     	<article class="col-sm-9">
+          <div class="card">
+  <div class="card-header">
+     <strong>Lịch Sử Học</strong>
+  </div>
+  <div class="card-body">
+
+    <blockquote class="blockquote mb-0">
+      <table class="table" id="table">
+  <thead>
+    <tr>
+      <th scope="col">STT</th>
+      <th scope="col">Tên Môn</th>
+      <th scope="col">Điểm Quiz</th>
+      <th scope="col">Trạng Thái</th>
+      <th scope="col">Thời Gian</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+    </blockquote>
+  </div>
+</div>
+     	</article>
+     	<aside class="col-sm-3">         
+        <div class="panel-group" id="accordion">            
+          <div class="panel panel-default" ng-controller="myctrl">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <img src="https://cdn-icons.flaticon.com/png/512/820/premium/820875.png?token=exp=1642589309~hmac=51c8a63e61a406463d0f5124ebe41659" width="30px" style="margin-right:5px;"><strong  class="tieude">CNTT</strong>
+                </button>
+                </h2>
+                <div id="collapseOne"  class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <a onclick="thi()" ng-repeat="ds in lists" ng-click="kiemtra(ds.Id,ds.Name)" class="list-group-item">{{ds.Name}}<div class="shape"></div></a>
+                </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <img src="https://cdn-icons-png.flaticon.com/512/921/921591.png" width="30px" style="margin-right:5px"> <strong  class="tieude">QTKD</strong>
+            </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <a href="#" class="list-group-item">Kinh Tế <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Digital Markeing <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Quảng Cáo <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Kỹ Năng Sáng Tạo <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Khởi Sự Doanh Nghiệp <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Kỹ Nâng Đàm Phán <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Xây Dựng Phát Triển Thương Hiệu <div class="shape"></div></a>
+            </div>
+          </div>
+                </div>
+                <!--/Special-->
+                <div class="panel panel-default">
+            <div class="accordion-item">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <img src="https://cdn-icons-png.flaticon.com/512/2452/2452203.png" style="margin-right:5px" width="30px"><strong class="tieude">Môn Cơ Bản</strong>
+      </button>
+    </h2>
+    </a>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <a href="#" class="list-group-item">Tiếng Anh 1.1 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Tiếng Anh 1.2 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Tiếng Anh 2.1 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Tiếng Anh 2.2 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Chính Trị <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Pháp Luật <div class="shape"></div></a>
+    </div>
+  </div>
+                </div>
+                </div>              
+            </aside>
+     </div>
+     <footer class="row">
+         <img src="../IMAGES/footer.png">
+     </footer>
+    </div>
+</body>
+</html>

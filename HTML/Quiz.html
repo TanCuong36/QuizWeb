@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Web Thi Online Trắc Nghiệm</title>
+  <script src="../js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../CSS/custom.css">
+  <script src="../DB/Subjects.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.js"></script>
+</head>
+<body ng-app="myapp" ng-controller="myctrl">
+    <div class="container">
+     <header class="row">
+         <img src="https://caodang.fpt.edu.vn/wp-content/uploads/Banner1-1.png">
+     </header>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+     <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <li class="nav-item">
+          <a class="nav-link ti" href="../TrangChu.html"><strong class="title" >FPT Polytechnic</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="../HTML/GioiThieu.html"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/2986/premium/2986258.png?token=exp=1646070834~hmac=b8c7a86fecc96e33dc6a57082ff621e8"> Giới Thiệu</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="#"><strong class="title"><img src="https://cdn-icons-png.flaticon.com/512/2343/2343694.png"> Liên Hệ</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="feedback.html"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/2839/premium/2839172.png?token=exp=1646070950~hmac=cd7cf35aa96bdfabdf4c83dfbed337ae"> Góp Ý</strong></a>
+        </li>
+        <li class="nav-item click">
+          <a class="nav-link" href="Hoidap.html"><strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/1055/premium/1055442.png?token=exp=1646071004~hmac=5912b001cecd389c100d112473198b61"> Hỏi Đáp</strong></a>
+        </li>
+        <li class="nav-item  click dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           <strong class="title"><img src="https://cdn-icons.flaticon.com/png/512/1144/premium/1144709.png?token=exp=1646071035~hmac=666ab27a3f974c553473559f3123cf70"> Tài Khoản</strong>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li class="item"><a class="dropdown-item" href="DN.html"><strong class="title">Đăng Nhập</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="#"><strong class="title">Quên Mật Khẩu</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="DK.html"><strong class="title">Đăng Ký Thành Viên</strong></a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="item"><a class="dropdown-item" href="#"><strong class="title">Đăng Xuất</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="Changepass.html"><strong class="title">Đổi Mật Khẩu</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="LichSu.html"><strong class="title">Lịch Sử Học</strong></a></li>
+                <li class="item"><a class="dropdown-item" href="info.html"><strong class="title">Cập Nhật Tài Khoản</strong></a></li> 
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+     <div class="row tbody">
+      <script src="../DB/QUIZ.js"></script>
+      <script type="text/javascript">
+        var db = openDatabase('asm', '1.0', 'webonline', 2 * 1024 * 1024);
+        db.transaction(function(tx){
+            tx.executeSql('CREATE TABLE IF NOT EXISTS LichSu(TenUser,TenQuiz,Mark,NgayThi)');
+        })
+        function thi() {
+          location.assign('Quiz.html');
+        }
+       var app = angular.module("myapp",["ngRoute"]);
+       app.config(function($routeProvider) {
+              $routeProvider             
+              .when("/",{
+                 template: `<div class="card mb-3" style="width: 70%;" ng-repeat="x in lists|filter: ten">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="../{{x.Logo}}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title"><strong>{{ten}}</strong></h5><br>
+                    <p class="card-text"><strong>Điểm: {{mark}}/10</strong><br></p>
+                    <p class="card-text"><strong>Thời Gian: {{thoigian}}</strong></p>
+                    <p class="card-text"><strong>Trạng Thái: {{trangthai}}</strong></p>
+                    <hr>
+                    <button ng-click="reset()" class="btn btn-primary">
+                    <a href="#!show" style="color:white;text-decoration:none;">Show Quizs</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>`, 
+              })
+              .when("/show",{
+                template:`<div class="card text-center">
+                <h2>Thời Gian: {{gio}} phút {{phut}} giây</h2>
+          <div class="card-header"><img src="https://cdn-icons-png.flaticon.com/512/2222/2222807.png" width="30px"><strong>{{ten}}</strong></div>
+          <div class="card-body" id="Cau1" ng-repeat="x in quizs|limitTo:1:start">
+            <h5 class="card-title"><span ng-bind="socau"></span>. <span ng-bind="x.Text"></span></h5>
+            <hr>
+            <div class="form-check form-check-inline col-12" ng-repeat="z in x.Answers">    <input class="form-check-input" type="radio" name="answer" id="{{z.Id}}" ng-click="ktda(z.Id,x.AnswerId)">
+            <label class="form-check-label" for="{{z.Id}}">{{z.Text}}</label>            
+            </div>                                                                
+          </div>
+          <div class="card-footer text-muted">MASK: 0/10</div>
+        </div>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">   
+            <li class="page-item">
+               <button class="btn btn-dark" ng-disabled="9==start" ng-click="tinhdiem()">Next</button>
+              <button class="btn btn-success" ng-click="luu()"><a href="#!nop" style="text-decoration: none;color: white;">Submit</a></button>
+            </li>
+          </ul>
+        </nav>`
+              })
+              .when("/nop",{
+                template:`<div class="card text-center">
+                            <div class="card-header">Kết Quả Kiểm Tra</div>
+                            <div class="card-body">
+                              <h5 class="card-title">{{ten}}</h5>
+                              <h5 class="card-title">Điểm: {{mark}}/10</h5>
+                              <a href="#!show" ng-click="reset()" class="btn btn-primary">Test Again</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                              2s ago
+                            </div>
+                          </div>`
+              })
+            });
+       app.controller("myctrl",function ($scope,$interval){                      
+            $scope.quizs= quiz(localStorage.getItem("idmon"));
+            $scope.lists = mon;          
+            $scope.ten= localStorage.getItem("tenmon")
+            $scope.socau=1;    
+            $scope.start=0;
+            $scope.mark=0;
+            $scope.thoigian=null;
+            $scope.trangthai=null;
+            $scope.tich="undefined";
+            $scope.ktda=function(x,y){
+               $scope.tich=x;
+               $scope.answer=y;
+            }           
+            $scope.tinhdiem=function(){
+              if ($scope.tich=="undefined"){
+                alert("Vui Lòng Chọn Đáp Án");
+              }else{
+                if ($scope.tich==$scope.answer){
+                 $scope.mark++;
+               }
+                 $scope.tich="undefined"
+                 $scope.start++;
+                 $scope.socau++;
+              }              
+            }
+            $scope.reset=function() {
+              $scope.tich="undefined";
+              $scope.socau=1;    
+              $scope.start=0;
+              $scope.mark=0;
+              $scope.gio = 10;
+              $scope.phut = 0;
+              $scope.countdown = $interval(function(){
+                 $scope.phut--
+                 if($scope.phut<0){
+                   $scope.gio--;
+                   $scope.phut=59;
+                   if ($scope.gio<0){                   
+                   $scope.stop();
+                   $scope.gio = 0;
+                   $scope.phut = 0;                   
+                 }
+                 }
+                 
+            }, 1000);
+            }        
+            $scope.kiemtra = function(x,y) {
+               if (typeof(Storage) !== "undefined") {              
+              localStorage.setItem("idmon",x);
+              localStorage.setItem("tenmon",y);                            
+              } else {
+              alert("Xin lỗi, trình duyệt web của bạn không hỗ trợ storage..."); 
+              }  
+             }
+            $scope.stop=function() {
+              alert("Hết THời Gian Làm Bài")
+              $interval.cancel($scope.countdown);
+              $scope.luu();
+              window.location.href = "#!nop"
+            }
+            $scope.luu = function(){              
+               db.transaction(function(tx){
+                  tx.executeSql('SELECT * FROM LichSu WHERE TenQuiz=? AND TenUser=?',[$scope.ten,localStorage.getItem("userdn")],function(tx,result){
+                  var ngay = new Date();
+                  var time = ngay.getDate()+"-"+(ngay.getMonth()+1)+"-"+ngay.getFullYear();  
+                     if (result.rows.length==1){
+                        tx.executeSql('UPDATE LichSu SET Mark=?,NgayThi=? WHERE TenQuiz=?',[$scope.mark,time,$scope.ten])
+                     } else {
+                        var tendn = localStorage.getItem("userdn");
+                        tx.executeSql('INSERT INTO LichSu(TenUser,TenQuiz,Mark,NgayThi) VALUES(?,?,?,?)',[tendn,$scope.ten,$scope.mark,time]);
+                        alert("Lưu Điểm Thành Công");
+                     }
+                  })
+               })
+            }
+            db.transaction(function(tx){
+          tx.executeSql('SELECT * FROM LichSu WHERE TenUser=? AND TenQuiz=?',[localStorage.getItem("userdn"),localStorage.getItem("tenmon")],function(tx,result){
+              if (result.rows.length==1){
+                 $scope.mark=result.rows.item(0).Mark;
+                 $scope.thoigian=result.rows.item(0).NgayThi;
+              } else {
+                $scope.mark="null";
+                $scope.thoigian="null";
+              }
+              if ($scope.mark=="null"){$scope.trangthai="Chưa Làm Quiz"}else{$scope.trangthai="Đã Làm Quiz"}
+          })
+       })
+       })
+       
+    </script>
+    
+     	<article class="col-sm-9">
+            <br>
+            <hr>
+            <div ng-view></div>
+     	</article>
+     	<aside class="col-sm-3">         
+        <div class="panel-group" id="accordion">            
+          <div class="panel panel-default" ng-controller="myctrl">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <img src="https://cdn-icons.flaticon.com/png/512/644/premium/644617.png?token=exp=1646071152~hmac=cfdcbf5be24863d56ca29e3b607576ef" width="30px" style="margin-right:5px;"><strong  class="tieude">CNTT</strong>
+                </button>
+                </h2>
+                <div id="collapseOne"  class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <a onclick="thi()" ng-repeat="ds in lists" ng-click="kiemtra(ds.Id,ds.Name)" class="list-group-item">{{ds.Name}}<div class="shape"></div></a>
+                </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <img src="https://cdn-icons-png.flaticon.com/512/921/921591.png" width="30px" style="margin-right:5px"> <strong  class="tieude">QTKD</strong>
+            </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <a href="#" class="list-group-item">Kinh Tế <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Digital Markeing <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Quảng Cáo <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Kỹ Năng Sáng Tạo <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Khởi Sự Doanh Nghiệp <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Kỹ Nâng Đàm Phán <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Xây Dựng Phát Triển Thương Hiệu <div class="shape"></div></a>
+            </div>
+          </div>
+                </div>
+                <!--/Special-->
+                <div class="panel panel-default">
+            <div class="accordion-item">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <img src="https://cdn-icons-png.flaticon.com/512/2452/2452203.png" style="margin-right:5px" width="30px"><strong class="tieude">Môn Cơ Bản</strong>
+      </button>
+    </h2>
+    </a>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <a href="#" class="list-group-item">Tiếng Anh 1.1 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Tiếng Anh 1.2 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Tiếng Anh 2.1 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Tiếng Anh 2.2 <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Chính Trị <div class="shape"></div></a>
+        <a href="#" class="list-group-item">Pháp Luật <div class="shape"></div></a>
+    </div>
+  </div>
+                </div>
+                </div>              
+            </aside>
+     </div>
+     <footer class="row">
+         <img src="../IMAGES/footer.png">
+     </footer>
+    </div>
+</body>
+</html>

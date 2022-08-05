@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web Thi Online Trắc Nghiệm</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="CSS/custom.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+    <script src="DB/Subjects.js"></script>
+    <script type="text/javascript">
+    function ex(){
+    document.getElementById('tuyensinh').style.display="none";
+    }
+    var app = angular.module("myapp",[]);
+    app.controller("myctrl1",function ($scope) {
+    $scope.dn = function(){
+    var x = localStorage.getItem("userdn");
+    if (x==null){
+    return false;
+    } else {
+    return true;
+    }
+    }
+    })
+    app.controller("myctrl",function ($scope){
+    
+    $scope.lists = mon;
+    $scope.begin=0;
+    $scope.mon;
+    $scope.first = function() {
+    $scope.begin=0;
+    }
+    $scope.prev = function() {
+    $scope.begin -=4;
+    if ($scope.begin<0) {
+    $scope.last();
+    }
+    }
+    $scope.next = function() {
+    $scope.begin +=4;
+    if ($scope.begin==$scope.lists.length) {
+    $scope.begin=0;
+    }
+    }
+    $scope.last = function() {
+    $scope.begin=$scope.lists.length-4;
+    }
+    $scope.kiemtra = function(x,y){
+    var ten = localStorage.getItem("userdn");
+    if (ten!="") {
+    if (typeof(Storage) !== "undefined") {
+    localStorage.setItem("idmon",x);
+    localStorage.setItem("tenmon",y);
+    location.assign("HTML/Quiz.html");
+    } else {
+    alert("Xin lỗi, trình duyệt web của bạn không hỗ trợ storage...");
+    }
+    } else {
+    alert("Vui Lòng Đăng Nhập")
+    }
+    }
+    })
+    function dangxuat() {
+    localStorage.setItem("userdn","");
+    }
+    function check() {
+    if (localStorage.getItem("userdn")!=""){
+    alert("Bạn Đã Đăng Nhập");
+    }else{
+    location.assign("HTML/DN.html");
+    }
+    }
+    </script>
+  </head>
+  <body ng-app="myapp">
+    <div class="bd-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="false">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <header class="row">
+        <img src="https://caodang.fpt.edu.vn/wp-content/uploads/Banner1-1.png">
+      </header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <li class="nav-item">
+                <a class="nav-link ti" href="#"><strong class="title">FPT Polytechnic</strong></a>
+              </li>
+              <li class="nav-item click">
+                <a class="nav-link" href="HTML/GioiThieu.html"><strong class="title">
+                <img src="https://cdn-icons.flaticon.com/png/512/2986/premium/2986258.png?token=exp=1646070834~hmac=b8c7a86fecc96e33dc6a57082ff621e8"> Giới Thiệu</strong></a>
+              </li>
+              <li class="nav-item click">
+                <a class="nav-link" href="HTML/Lienhe.html"><strong class="title">
+                <img src="https://cdn-icons-png.flaticon.com/512/2343/2343694.png"> Liên Hệ</strong></a>
+              </li>
+              <li class="nav-item click">
+                <a class="nav-link" href="HTML/feedback.html"><strong class="title">
+                <img src="https://cdn-icons.flaticon.com/png/512/2839/premium/2839172.png?token=exp=1646070950~hmac=cd7cf35aa96bdfabdf4c83dfbed337ae"> Góp Ý</strong></a>
+              </li>
+              <li class="nav-item click">
+                <a class="nav-link" href="HTML/Hoidap.html"><strong class="title">
+                <img src="https://cdn-icons.flaticon.com/png/512/1055/premium/1055442.png?token=exp=1646071004~hmac=5912b001cecd389c100d112473198b61"> Hỏi Đáp</strong></a>
+              </li>
+              <li class="nav-item  click dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <strong class="title">
+                  
+                  <img src="https://cdn-icons.flaticon.com/png/512/1144/premium/1144709.png?token=exp=1646071035~hmac=666ab27a3f974c553473559f3123cf70"> Tài Khoản</strong>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown" ng-controller="myctrl1">
+                  <li class="item" onclick="check()"><a class="dropdown-item"><strong class="title">Đăng Nhập</strong></a></li>
+                  <li class="item"><a class="dropdown-item" href="#"><strong class="title">Quên Mật Khẩu</strong></a></li>
+                  <li class="item"><a class="dropdown-item" href="HTML/DK.html"><strong class="title">Đăng Ký Thành Viên</strong></a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li class="item"><a class="dropdown-item" onclick="dangxuat()" href="#"><strong class="title">Đăng Xuất</strong></a></li>
+                  <li class="item"><a class="dropdown-item" href="HTML/Changepass.html"><strong class="title">Đổi Mật Khẩu</strong></a></li>
+                  <li class="item"><a class="dropdown-item" href="HTML/LichSu.html"><strong class="title">Lịch Sử Học</strong></a></li>
+                  <li class="item"><a class="dropdown-item" href="HTML/info.html"><strong class="title">Cập Nhật Tài Khoản</strong></a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="row tbody">
+        <article class="col-sm-9" ng-controller="myctrl">
+          <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="https://ap.poly.edu.vn/images/Banner-AP.png" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="IMAGES/ts.png" class="d-block w-100" alt="...">
+              </div>
+              <div class="carousel-item">
+                <img src="IMAGES/slide3.png" class="d-block w-100" alt="...">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <img src="https://cdn-icons-png.flaticon.com/512/3039/3039367.png" width="30px"><strong> Danh Mục</strong>
+            </div>
+            <div class="card-body">
+              <div class="container-fluid">
+                <div class="row" >
+                  <div class="col-sm-6" ng-repeat="x in lists|limitTo:4:begin">
+                    <div class="item-in">
+                      <a class="thumbnail">
+                        <img src="{{x.Logo}}" ng-click="kiemtra(x.Id,x.Name)" class="img-thumbnail">
+                        <button ng-click="kiemtra(x.Id,x.Name)" class="btn kt">Kiểm Tra</button>
+                      </a>
+                    </div>
+                    <div class="caption">
+                      <strong>{{x.Name}}</strong>
+                    </div>
+                  </div>
+                </div>
+                <iframe src=""></iframe>
+                <div class="dieuhuong">
+                  <ul>
+                    <li class="btn" ng-click="first()"><a><img src="https://cdn-icons-png.flaticon.com/512/57/57099.png"></a></li>
+                    <li class="btn" ng-click="prev()"><a><img src="https://cdn-icons-png.flaticon.com/512/151/151846.png"></a></li>
+                    <li class="btn" ng-click="next()"><a><img src="https://cdn-icons-png.flaticon.com/512/151/151858.png"></a></li>
+                    <li class="btn" ng-click="last()"><a><img src="https://cdn-icons-png.flaticon.com/512/56/56913.png"></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <aside class="col-sm-3">
+          <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+              <div class="accordion-item" ng-controller="myctrl">
+                <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <img src="https://cdn-icons.flaticon.com/png/512/644/premium/644617.png?token=exp=1646071152~hmac=cfdcbf5be24863d56ca29e3b607576ef" width="30px" style="margin-right:5px;"><strong class="tieude">CNTT</strong>
+                </button>
+                </h2>
+                <div id="collapseOne" ng-repeat="x in lists"  class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <a href="HTML/Quiz.html" ng-click="kiemtra(x.Id,x.Name)" class="list-group-item">{{x.Name}}<div class="shape"></div></a>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <img src="https://cdn-icons-png.flaticon.com/512/921/921591.png" width="30px" style="margin-right:5px"> <strong  class="tieude">QTKD</strong>
+                </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                  <a href="#" class="list-group-item">Kinh Tế <div class="shape"></div></a>
+                  <a href="#" class="list-group-item">Digital Markeing <div class="shape"></div></a>
+                  <a href="#" class="list-group-item">Quảng Cáo <div class="shape"></div></a>
+                  <a href="#" class="list-group-item">Kỹ Năng Sáng Tạo <div class="shape"></div></a>
+                  <a href="#" class="list-group-item">Khởi Sự Doanh Nghiệp <div class="shape"></div></a>
+                  <a href="#" class="list-group-item">Kỹ Nâng Đàm Phán <div class="shape"></div></a>
+                  <a href="#" class="list-group-item">Xây Dựng Phát Triển Thương Hiệu <div class="shape"></div></a>
+                </div>
+              </div>
+            </div>
+            <!--/Special-->
+            <div class="panel panel-default">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <img src="https://cdn-icons-png.flaticon.com/512/2452/2452203.png" style="margin-right:5px" width="30px"><strong class="tieude">Môn Cơ Bản</strong>
+                </button>
+                </h2>
+              </a>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <a href="#" class="list-group-item">Tiếng Anh 1.1 <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Tiếng Anh 1.2 <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Tiếng Anh 2.1 <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Tiếng Anh 2.2 <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Chính Trị <div class="shape"></div></a>
+                <a href="#" class="list-group-item">Pháp Luật <div class="shape"></div></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <footer class="row">
+      <img src="IMAGES/footer.png">
+    </footer>
+  </div>
+  <div class="iconfooter">
+    <img src="https://cdn-icons-png.flaticon.com/512/906/906382.png" width="100%"><br>
+    <img src="https://cdn-icons-png.flaticon.com/512/1312/1312139.png" width="100%">
+  </div>
+  <div id="tuyensinh">
+    <div onclick="ex()"><img src="https://cdn-icons-png.flaticon.com/512/399/399274.png" width="30px"></div>
+    <img src="https://drive.tiny.cloud/1/scyw71pj8619analvxs56ppc2w2fj2kpy5vnmflhhc300y35/7dfbb42f-50c0-4b97-94b5-4cc59dbc257a" width="300px">
+  </div>
+</body>
+</html>

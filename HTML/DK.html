@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/form.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+</head>
+<body ng-app="myapp">
+    <div class="nen">
+        <img src="https://i1.wp.com/phothongcaodang.fpt.edu.vn/wp-content/uploads/Anh-co-so-dao-tao-Pho-thong-Cao-dang-FPT-Da-Nang-9.jpg?ssl=1" id="trangchu">
+    </div>
+    <div class="login" ng-controller="myctrl">
+        <img src="https://static.ybox.vn/2020/2/0/1582473564897-Poly.png" width="300px">
+        <h2>Sign Up</h2>
+        <form name="frmBonus">
+            <div class="group">
+                <input type="text" required ng-model="student.fullname" name="txtfullname" placeholder="FullName" >
+                <i class="fa fa-user"></i>
+                <span class="badge bg-danger" ng-show="frmBonus.txtfullname.$invalid && frmBonus.txtfullname.$touched">Vui Lòng nhập họ và tên</span>
+            </div>
+            <div class="group">
+                <input type="text" required ng-model="student.username" name="txtUsername" placeholder="Username" check-null onclick="xoa()">
+                <i class="fa fa-user"></i>
+                <span class="badge bg-danger" ng-show="frmBonus.txtUsername.$invalid && frmBonus.txtUsername.$touched">Vui Lòng nhập UserName</span>
+                <span class="badge bg-danger" id="kiemt"></span>              
+        </div>
+        <div class="group">
+            <input type="email" required ng-model="student.email" name="txtemail" placeholder="Email" poly-number>
+            <i class="fa fa-user"></i>           
+            <span class="badge bg-danger" ng-show="frmBonus.txtemail.$error.required && frmBonus.txtemail.$touched">Vui lòng nhập email </span>
+            <span class="badge bg-danger"  ng-show="frmBonus.txtemail.$error.email">Chưa đúng định dạng Email</span>
+        </div>
+        <div class="group"><input type="password" required name="txtpass" ng-model="student.password" placeholder="Password" maxlength="20"><i class="fa fa-lock"></i>
+            <span class="badge bg-danger" ng-show="frmBonus.txtpass.$invalid && frmBonus.txtpass.$touched">Vui Lòng nhập Mật Khẩu</span>
+        </div>
+        <div class="group"><input type="text" name="txtgt" required ng-model="student.gt" placeholder="GioiTinh" ><i class="fa fa-user"></i>
+            <span class="badge bg-danger" ng-show="frmBonus.txtgt.$invalid && frmBonus.txtgt.$touched">Vui Lòng nhập giới tính</span>
+        </div>
+        </form>               
+        <button type="button" ng-disabled="frmBonus.txtfullname.$invalid||frmBonus.txtUsername.$invalid||
+        frmBonus.txtemail.$invalid||frmBonus.txtpass.$invalid||frmBonus.txtgt.$invalid" style="border-radius: 50px;" ng-click="signup()"><i class="fa fa-send"></i>Sign Up</button>
+        <p class="ss">I have an account: <a href="../HTML/DN.html">Sign In</a></p>
+        <p class="ss"><a href="../TrangChu.html">FPT Polytechnic</a></p>
+    </div>
+    <script src="../DB/Students.js"></script>
+    <script>
+        var db = openDatabase('asm', '1.0', 'webonline', 2 * 1024 * 1024);
+        db.transaction(function (tx) {                   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS Students(UserName unique,FullName,Email,MatKhau,GioiTinh,schoolfee,mark)');
+        })  
+        function xoa() {
+                document.getElementById("kiemt").innerHTML="";
+              }      
+        var app = angular.module("myapp",[]);
+        app.controller("myctrl",function ($scope){            
+            $scope.student={};
+            if ($scope.student.username==null){
+                document.getElementById("kiemt").innerHTML=""
+            }
+            $scope.signup = function () {
+                db.transaction(function (tx) {
+                    tx.executeSql('SELECT * FROM Students WHERE UserName=?',[$scope.student.username],function(tx,result){
+                        if (result.rows.length==1){
+                            document.getElementById("kiemt").innerHTML="UserName Đã Được Sử Dụng"
+                        } else {
+                            tx.executeSql('INSERT INTO Students(UserName,FullName,Email,MatKhau,GioiTinh,schoolfee,mark)VALUES(?,?,?,?,?,?,?)',[$scope.student.username,$scope.student.fullname,$scope.student.email,$scope.student.password,$scope.student.gt,"2000000","0"]);
+                            alert("Đăng Ký Thành Viên Thành Công");
+                        location.assign('DN.html');
+                        }
+                    })                                  
+                })               
+            }           
+        })
+    </script>
+</body>
+</html>
